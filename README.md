@@ -9,9 +9,16 @@ Building the program requires Java 13+. From the root of the project, run the fo
 ./gradlew copyJar
 ```
 
-That command will test and compile all code, use the [`shadowJar`](https://imperceptiblethoughts.com/shadow/) Gradle plugin to create an executable `jar` with all dependencies, and copy that `jar` to the root of the project.
+That command will compile all code, use the [`shadowJar`](https://imperceptiblethoughts.com/shadow/) Gradle plugin to create an executable `jar` with all dependencies, and copy that `jar` to the root of the project.
 
 > Note: Depending on your OS and shell, you may have to alter your invocation of `gradlew`. There is a `gradlew` Linux shell file and a `gradlew.bat` Windows batch file in the project; use whatever is correct for your platform. 
+
+## Testing
+Testing the program requires Java 13+. From the root of the project, run the following:
+
+```
+./gradlew test
+```
 
 ## Running
 Running the program requires Java 13+. After building, the executable `jar` can be run as follows:
@@ -61,3 +68,4 @@ These comments are more general and aren't about any specific piece of code. Not
 - **API parameters abstracted up**: Despite having an API wrapper, I didn't want to bloat my code with reinventing the wheel. [Google has a spec for numeric mappings to route types](https://developers.google.com/transit/gtfs/reference#routestxt), so my code just works directly with those integers and documents it in the method comments.
 - **Being selective with deserialization**: There's a lot of data provided in the endpoints--that informed my process in two ways. First, the classes I use for deserialization have only a subset of the fields that could be parsed from the data. Second, since even that more minimal structure could be difficult to work with, my tests use either a mock server or the real endpoint to do testing, instead of trying to craft complex scenarios myself that themselves might contain errors.
 - **Kotlin as a language**: I used Kotlin simply because its what I'm most comfortable with. I think it improves on Java's syntax and type inference in key ways that further the benefit of the JVM's library maturity. 
+- **No API key**: In all of my testing I never hit a rate limit, so I didn't add handling for an API key because I didn't want to wire up a secret-management system or roll something myself with reading from environment variables. I chalk it up to a matter of project scope--I don't want the interface to my program to involve messing with environment variables.
