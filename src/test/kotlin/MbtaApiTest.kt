@@ -92,7 +92,88 @@ object MbtaApiTest {
                     )
                 )
             ),
+            // passing the type parameter to the mock is useless but helps ensure we don't face errors forming it
             MbtaApi(mockClient).getRoutes(1)
+        )
+    }
+
+    /**
+     * Similar to the above test, this mocks a "/stops" api request with a snippet from a manual run of the API from
+     * the online documentation: https://api-v3.mbta.com/docs/swagger/index.html#/Stop/ApiWeb_StopController_index
+     */
+    @Test
+    fun testGetStops(): Unit = runBlocking {
+        val mockClient = HttpClient(MockEngine) {
+            install(JsonFeature)
+            engine {
+                addHandler { request ->
+                    if (request.url.fullPath.startsWith("/stops"))
+                        respond(
+                            """
+{
+  "data": [
+    {
+      "attributes": {
+        "address": "Alewife Brook Pkwy and Cambridge Park Dr, Cambridge, MA 02140",
+        "at_street": null,
+        "description": null,
+        "latitude": 42.395428,
+        "location_type": 1,
+        "longitude": -71.142483,
+        "municipality": "Cambridge",
+        "name": "Alewife",
+        "on_street": null,
+        "platform_code": null,
+        "platform_name": null,
+        "vehicle_type": null,
+        "wheelchair_boarding": 1
+      },
+      "id": "place-alfcl",
+      "links": {
+        "self": "/stops/place-alfcl"
+      },
+      "relationships": {
+        "child_stops": {},
+        "facilities": {
+          "links": {
+            "related": "/facilities/?filter[stop]=place-alfcl"
+          }
+        },
+        "parent_station": {
+          "data": null
+        },
+        "recommended_transfers": {},
+        "zone": {
+          "data": null
+        }
+      },
+      "type": "stop"
+    }
+  ]
+}
+                        """.trimIndent(),
+                            HttpStatusCode.OK,
+                            headersOf("Content-Type" to listOf(ContentType.Application.Json.toString()))
+                        )
+                    else respondBadRequest()
+                }
+            }
+        }
+
+        assertEquals(
+            Stops(
+                listOf(
+                    Stops.StopData(
+                        type = "stop",
+                        id = "place-alfcl",
+                        attributes = Stops.StopData.Attributes(
+                            name = "Alewife"
+                        )
+                    )
+                )
+            ),
+            // passing the route parameter to the mock is useless but helps ensure we don't face errors forming it
+            MbtaApi(mockClient).getStops("Red")
         )
     }
 }

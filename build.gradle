@@ -30,6 +30,7 @@ Closure<Void> kotlinCompilationOptions = {
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs += "-Xuse-experimental=" + [
+                "kotlin.ExperimentalStdlibApi",
                 "io.ktor.util.KtorExperimentalAPI"
         ].join(",")
     }
