@@ -5,6 +5,8 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.http.ContentType
 
+// This main method is just placed at the top-level, rather than in a dummy wrapper class (Kotlin's compiler does
+// that for us). It just redirects to the [CommandRunner] further down in this file
 fun main(args: Array<String>) = CommandRunner.subcommands(
     QuestionOne(httpClient),
     QuestionTwo(httpClient),
@@ -29,6 +31,7 @@ object CommandRunner : CliktCommand(
     help = "An executable answering individual questions from the Broad Institute coding challenge: " +
             "Supply one of the below commands to see the associated output or pass -h to a command to see help"
 ) {
+    // This object just delegates, so we don't need it to do anything upon being called
     override fun run() = Unit
 }
 
