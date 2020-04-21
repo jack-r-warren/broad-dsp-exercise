@@ -20,12 +20,18 @@ dependencies {
     implementation 'com.github.ajalt:clikt:2.4.0'
     implementation "io.ktor:ktor-client-core:$ktor_version"
     implementation "io.ktor:ktor-client-cio:$ktor_version"
+    implementation "io.ktor:ktor-client-json:$ktor_version"
+    implementation "io.ktor:ktor-client-gson:$ktor_version"
+    testImplementation "io.ktor:ktor-client-mock-jvm:$ktor_version"
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
 }
 
 Closure<Void> kotlinCompilationOptions = {
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += "-Xuse-experimental=" + [
+                "io.ktor.util.KtorExperimentalAPI"
+        ].join(",")
     }
 }
 

@@ -19,3 +19,19 @@ Running the program requires Java 13+. After building, the executable `jar` can 
 ```
 java -jar "Broad DSP Exercise.jar"
 ```
+
+The above command will print the usage information:
+
+```
+Usage: java -jar "Broad DSP Exercise.jar" [OPTIONS] COMMAND [ARGS]...
+
+  An executable answering individual questions from the Broad Institute coding
+  challenge: Supply one of the below commands to see the associated output
+
+Options:
+  -h, --help  Show this message and exit
+
+Commands:
+  q1  Perform the task for question 1: print out the long names of each subway
+      line
+```
